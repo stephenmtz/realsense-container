@@ -1,0 +1,17 @@
+services:
+  realsense-sdk:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        LIBREALSENSE_VERSION: v2.58.1
+        NUM_JOBS: 6
+    image: realsense-sdk:v2.58.1
+    privileged: true
+    devices:
+      - /dev/media0:/dev/media0
+      - /dev/video0:/dev/video0
+      - /dev/video2:/dev/video2
+      - /dev/video4:/dev/video4
+      - /dev/video6:/dev/video6
+    command: rs-enumerate-devices # just to see if the container worked 
