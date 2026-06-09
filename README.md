@@ -7,11 +7,20 @@ Nothing runs here — this is the SDK layer that publisher nodes build on top of
 
 The goal is to mimic a multi-camera setup where each stream is its own publisher node sharing data over iceoryx2 shared memory:
 
-[realsense-sdk]
-      |
-      ├── FROM → [publisher-node] # rgb
-      ├── FROM → [publisher-node] # depth
-      └── FROM → [publisher-node] # infrared
+```mermaid
+graph LR
+    SDK[realsense-sdk base]
+ 
+    SDK --> RGB[publisher-node\nrgb]
+    SDK --> DEPTH[publisher-node\ndepth]
+    SDK --> IR[publisher-node\ninfrared]
+ 
+    RGB --> SHM[(iceoryx2\nshared memory)]
+    DEPTH --> SHM
+    IR --> SHM
+ 
+    SHM --> S2[subscriber-node\nprocessing]
+```
 
 Each publisher node is a separate container that inherits this SDK base.  
 Subscriber nodes only need iceoryx2 — no RealSense SDK required.
